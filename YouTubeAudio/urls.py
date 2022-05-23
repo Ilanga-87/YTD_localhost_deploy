@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from audio.views import index
+from audio.views import index, get_link
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', get_link, name='get_link'),
     path('', index, name='index'),
+
 ]
