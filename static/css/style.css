@@ -113,6 +113,10 @@ ul ol {
   margin-bottom: 0;
 }
 
+errorlist {
+  color: #6f42c1 !important;
+}
+
 dt {
   font-weight: 700;
 }

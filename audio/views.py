@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from .forms import YouTubeURLForm
+import youtube_dl
 
 # Create your views here.
 
@@ -18,4 +19,8 @@ def get_link(request):
     else:
         form = YouTubeURLForm()
     return render(request, 'audio/index.html', {'form': form})
+
+
+def my_func(request):
+    return render(request, 'audio/get_link.html')
 
