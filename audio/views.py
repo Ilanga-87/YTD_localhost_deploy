@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from .forms import YouTubeURLForm
 import youtube_dl
@@ -15,6 +16,8 @@ def get_link(request):
     if request.method == 'POST':
         form = YouTubeURLForm(request.POST)
         if form.is_valid():
+            form.save()
+            messages.success(request, 'Great!')
             return HttpResponseRedirect('get_link')
     else:
         form = YouTubeURLForm()
