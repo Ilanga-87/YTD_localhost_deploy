@@ -6,25 +6,26 @@
 {% endblock %}
 
 {% block content %}
-<!-- Header Start -->
-    <div class="jumbotron jumbotron-fluid mb-5">
-        <div class="container text-center py-5">
-            <h1 class="text-primary mb-4">Nice & Easy</h1>
-            <h1 class="text-white display-3 mb-5">Download AUDIO from YouTube videos</h1>
-            <div class="mx-auto" style="width: 100%; max-width: 600px;">
-                <div class="input-group">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form }}
-                        <!-- <input id="your_url" name="your_url" type="text" class="form-control border-light" style="padding: 30px;" placeholder="Tracking Id"> -->
-                        <!-- <div class="input-group-append"> -->
-                        <button type="submit" class="btn btn-primary px-3">Track & Trace</button>
-                        <!-- </div> -->
-                    </form>
+
+<!-- Hero Section start -->
+<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg3.jpg' %}">
+    <div class="container">
+        <div class="hero-warp">
+            <form class="main-search-form" method="POST">
+                {% csrf_token %}
+                <div class="search-type">
+                     </div>
+                <div class="search-input">
+                    {{ form.video_url }}
+                    <!-- <input type="text" placeholder="Search by state, postcode or suburb"> -->
+                    <button class="site-btn">Search</button>
                 </div>
-            </div>
+                <p>{{ form.video_url.errors }}</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
+            </form>
         </div>
     </div>
-    <!-- Header End -->
-
+</section>
+<!-- Hero Section end -->
+    
 {% endblock %}
