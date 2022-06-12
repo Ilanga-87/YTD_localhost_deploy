@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from audio.views import ConvertView, SuccessView, LoadView
+from audio.views import ConvertView, SuccessView, LoadView, NewView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', get_link, name='get_link'),
     path('', ConvertView.as_view(), name='index'),
-    path('success-page', SuccessView.as_view(), name='success-page'),
-    path('load_audio_<str:slug>', LoadView.as_view(), name='load-page')
+    path('success-page-<str:slug>', SuccessView.as_view(), name='success-page'),
+    path('new-page', NewView.as_view()),
+    path('load-audio-<str:slug>', LoadView.as_view(), name='load-page')
 
 ]
