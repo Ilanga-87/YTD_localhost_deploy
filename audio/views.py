@@ -13,6 +13,7 @@ from youtube_dl.utils import YoutubeDLError
 
 from .forms import YouTubeURLForm
 from .models import Conversion
+from .tasks import do_mult
 
 
 # Create your views here.
@@ -74,6 +75,8 @@ class ConvertView(SuccessMessageMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        do_mult.apply_async((3, 7), countdown=10)
+        print(do_mult.delay(8, 4))
         messages.success = (self.request, "JJDJJDJEJEJI")
         self.get_context_data()
 
@@ -97,14 +100,26 @@ class ConvertView(SuccessMessageMixin, CreateView):
             video_title = video_info.get("title", None)
             conversion.title = video_title
 
-        # пишем условие. если видео айди есть в базе данных, сразу редирект на страницу скачки. если нет, редирект на саксесс пэйдж
-            if Conversion.objects.filter(slug=conversion.slug).exists():
-                return redirect(f"/load-audio-{conversion.slug}")
+        # TODO UNLOCK пишем условие. если видео айди есть в базе данных, сразу редирект на страницу скачки. если нет, редирект на саксесс пэйдж
+        #     if Conversion.objects.filter(slug=conversion.slug).exists() and conversion.audio_file is not None:
+        #         return redirect(f"/load-audio-{conversion.slug}")
 
-            conversion.save()
-            return redirect(f"{self.success_url}-{conversion.slug}")
+        conversion.save()
+        return redirect(f"{self.success_url}-{conversion.slug}")
 
 
+class MyView(CreateView):
+    model = Conversion
+    form_class = YouTubeURLForm
+    success_url = "/success-page"
+    template_name = "audio/index.html"
+
+    def form_valid(self, form):
+
+        print(do_mult.delay(8, 4))
+
+        # form.save()
+        return redirect(self.success_url)
 
 
 class SuccessView(UpdateView):
@@ -135,15 +150,11 @@ class SuccessView(UpdateView):
         download(video)
         return redirect(f'/load-page-{instance.slug}')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.download_and_convert()
         context["message"] = "Wait for download"
         return context
-
-
-
 
 
 class LoadView(TemplateView):
@@ -164,9 +175,6 @@ class NewView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["message"] = "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
         return context
-
-
-
 
 # def index(request):
 #     if request.method == 'POST':
