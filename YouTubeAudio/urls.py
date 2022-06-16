@@ -20,7 +20,7 @@ from audio.views import ConvertView, SuccessView, LoadView, NewView, MyView
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', get_link, name='get_link'),
-    path('', MyView.as_view(), name='index'),
+    path('', ConvertView.as_view(), name='index'),
     path('success-page', NewView.as_view()),
     path('success-page-<str:slug>', SuccessView.as_view(), name='success-page'),
     path('new-page', NewView.as_view()),
