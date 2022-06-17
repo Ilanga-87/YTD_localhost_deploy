@@ -129,13 +129,12 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = BASE_DIR / "uploads"
+MEDIA_ROOT = BASE_DIR / "uploads/audio"
 MEDIA_URL = "/download-audio/"
 
 
 REDIS_HOST = "127.0.0.1"
 REDIS_PORT = "6379"
-
 
 
 CELERY_BROKER_URL = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"

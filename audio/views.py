@@ -1,14 +1,8 @@
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, Http404
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView, DetailView
-
-
-
-from youtube_dl import YoutubeDL
-from youtube_dl.utils import YoutubeDLError
 
 from .forms import YouTubeURLForm
 from .models import Conversion
@@ -18,42 +12,7 @@ from .service import extract_single_from_playlist, get_video_id
 
 # Create your views here.
 
-
-# def download(video):
-#     ydl_opts = {
-#         "quiet": True,
-#         'cachedir': False,
-#         'outtmpl': 'uploads/audio/%(title)s.%(ext)s',
-#         'format': 'bestaudio/best',
-#         'postprocessors': [{
-#             'key': 'FFmpegExtractAudio',
-#             'preferredcodec': 'mp3',
-#             'preferredquality': '320',
-#         }],
-#     }
-#
-#     try:
-#         with YoutubeDL(ydl_opts) as ydl:
-#             video_info = ydl.extract_info(video, download=False)
-#             video_title = video_info.get("title", None)
-#             slug = get_video_id(video)
-#             conversion.title = video_title
-#             audio = ydl.download([video])
-#             # conversion.audio_file.name = f"upload/audio/{conversion.title}.mp3"
-#
-#             # print(f"***********{conversion.title}")
-#             # print(f"++++++++ AND THIS IS {video_title}")
-#             print(f"SLUUUUUUUUG {slug}")
-#     except YoutubeDLError as err:
-#         print("Something get wrong")
-#         # TODO return error page
-#     # через ютдл из урла получить название видео + присвоить его title
-#     #
-#     # через дэйт тайм получиь таймстамп + присвоить его pub_time
-#     return redirect(f"/load-page-{slug}")
-
-
-class ConvertView(SuccessMessageMixin, CreateView):
+class ConvertView(CreateView):
     model = Conversion
     form_class = YouTubeURLForm
     template_name = "audio/index.html"
@@ -99,7 +58,7 @@ class SuccessView(TemplateView):
         return context
 
 
-class LoadView(TemplateView):
+class LoadView(DetailView):
     model = Conversion
     template_name = "audio/load_audio.html"
 

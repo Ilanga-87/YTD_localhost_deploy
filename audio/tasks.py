@@ -14,7 +14,7 @@ def do_mult(a, b):
     return a * b
 
 
-@app.task
+@app.task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 5}, retry_backoff=True)
 def download(video, video_id):
     instance = Conversion.objects.get(slug=video_id)
     instance.video_url = video
@@ -37,7 +37,7 @@ def download(video, video_id):
             video_title = video_info.get("title", None)
             instance.title = video_title
             audio = ydl.download([video])
-            instance.audio_file.name = f"upload/audio/{instance.title}.mp3"
+            instance.audio_file.name = f"{instance.title}.mp3"
     except YoutubeDLError as err:
         print("Something get wrong")
         # TODO return error page
