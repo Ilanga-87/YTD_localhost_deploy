@@ -1,12 +1,12 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
 
 
 # Create your models here.
 
 
 class Conversion(models.Model):
+    user_email = models.EmailField(max_length=254, default="")
     video_id = models.CharField("ID video", default="", max_length=100)
     video_url = models.CharField('URL to Youtube', max_length=255)
     title = models.CharField('Video title', max_length=100, blank=True)

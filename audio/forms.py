@@ -10,9 +10,10 @@ def start_with(value):
 
 
 class YouTubeURLForm(ModelForm):
-    video_url = forms.CharField(widget=forms.URLInput(), label='')
+    video_url = forms.CharField(widget=forms.URLInput(attrs={"placeholder": "YouTube URL"}), label='')
+    user_email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Your E-mail"}))
 
     class Meta:
         model = Conversion
-        fields = ['video_url']
+        fields = ['video_url', 'user_email']
         # widgets = {'video_url': TextInput(attrs={'name': '', 'placeholder': 'Input your URL'})}

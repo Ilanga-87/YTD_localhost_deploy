@@ -22,7 +22,7 @@ class ConvertView(CreateView):
         instance = form.save(commit=False)
         video = extract_single_from_playlist(form.cleaned_data["video_url"])
         slug = get_video_id(video)
-        instance.slug = slug
+        instance.slug = slug #TODO exclusive
 
         previous_conversion = Conversion.objects.filter(slug=instance.slug)
         if previous_conversion and Conversion.objects.get(slug=instance.slug).audio_file.name != '':
