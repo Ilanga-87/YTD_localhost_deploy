@@ -3,11 +3,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, Http404
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView, DetailView
+from django.conf import settings
+
+from celery import chord, chain
 
 from .forms import YouTubeURLForm
 from .models import Conversion
-from .tasks import do_mult, download
-from .service import extract_single_from_playlist, get_video_id
+from .tasks import download, send_link
+from .service import extract_single_from_playlist, get_video_id, generate_slug_tail
 
 
 # Create your views here.
@@ -21,16 +24,22 @@ class ConvertView(CreateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         video = extract_single_from_playlist(form.cleaned_data["video_url"])
-        slug = get_video_id(video)
+        user_email = form.cleaned_data["user_email"]
+        video_id = get_video_id(video)
+        slug_tail = generate_slug_tail(10)
+        slug = f"{video_id}-{slug_tail}"
+        instance.video_id = video_id
         instance.slug = slug #TODO exclusive
 
-        previous_conversion = Conversion.objects.filter(slug=instance.slug)
-        if previous_conversion and Conversion.objects.get(slug=instance.slug).audio_file.name != '':
-            return redirect(f"/load-audio-{instance.slug}")
+        possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
+        if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
+            previous_conversion = Conversion.objects.get(video_id=instance.video_id)
+            return redirect(f"/load-audio-{previous_conversion.slug}")
 
         instance.save()
 
-        download.delay(video, slug)
+        link = f"https://my_site.com/{self.success_url}-{slug}"
+        (download.si(video, slug) | send_link.si(user_email, link))()
 
         return redirect(f"{self.success_url}-{slug}")
 
@@ -42,7 +51,7 @@ class MyView(CreateView):
     template_name = "audio/index.html"
 
     def form_valid(self, form):
-        print(do_mult.delay(8, 4))
+
 
         # form.save()
         return redirect(self.success_url)

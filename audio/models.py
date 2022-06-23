@@ -11,7 +11,7 @@ class Conversion(models.Model):
     video_url = models.CharField('URL to Youtube', max_length=255)
     title = models.CharField('Video title', max_length=100, blank=True)
     audio_url = models.CharField('URL to created audio', max_length=255, blank=True)
-    pub_time = models.TimeField('Publish time', blank=True, null=True)
+    pub_time = models.DateTimeField('Publish time', auto_now_add=True)
     slug = models.SlugField(default=" ", max_length=255, blank=True, null=False)
     audio_file = models.FileField(upload_to="audio", blank=True)
 
