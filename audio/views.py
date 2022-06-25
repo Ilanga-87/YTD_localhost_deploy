@@ -1,9 +1,11 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, Http404
+from django.utils.text import slugify
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView, DetailView
 from django.conf import settings
+from django.http import FileResponse
 
 from celery import chord, chain
 
@@ -27,7 +29,7 @@ class ConvertView(CreateView):
         user_email = form.cleaned_data["user_email"]
         video_id = get_video_id(video)
         slug_tail = generate_slug_tail(10)
-        slug = f"{video_id}-{slug_tail}"
+        slug = slugify(f"{video_id}-{slug_tail}")
         instance.video_id = video_id
         instance.slug = slug #TODO exclusive
 
@@ -75,6 +77,11 @@ class LoadView(DetailView):
         context = super().get_context_data(**kwargs)
         context["message"] = "Get it!"
         return context
+
+
+def download_audio(request, title):
+    audio_file = FileResponse(open(f'uploads/audio/{title}', 'rb'), as_attachment=True)
+    return audio_file
 
 
 class NewView(TemplateView):
