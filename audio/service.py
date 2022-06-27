@@ -15,10 +15,10 @@ def get_video_id(video):
 
 def get_expiration_date():
     expiration_date = datetime.datetime.now() + datetime.timedelta(days=1)
-    return expiration_date.strftime("%d/%m/%Y %H:%M:%S")
+    return expiration_date
 
 
 def generate_slug_tail(length):
-    char_set = string.ascii_letters + string.digits
+    char_set = string.ascii_lowercase + string.digits
     tail = ''.join(random.choice(char_set) for i in range(length))
     return tail

@@ -18,16 +18,18 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from audio.views import ConvertView, SuccessView, LoadView, NewView, MyView
+from audio.views import ConvertView, SuccessView, LoadView, NewView, MyView, download_audio
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('download-audio/<str:title>', download_audio),
     # path('', get_link, name='get_link'),
     path('', ConvertView.as_view(), name='index'),
     path('success-page', NewView.as_view()),
     path('success-page-<str:slug>', SuccessView.as_view(), name='success-page'),
     path('new-page', NewView.as_view()),
-    path('load-audio-<str:slug>', LoadView.as_view(), name='load-page')
+    path('load-audio-<str:slug>', LoadView.as_view(), name='load-page'),
+
 
 ]
 

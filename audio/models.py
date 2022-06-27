@@ -1,8 +1,14 @@
 from django.db import models
 from django.urls import reverse
 
+from .service import get_expiration_date
 
 # Create your models here.
+
+
+def rename_cyrillic_audio(instance, filename):
+    path = "audio/"
+    title = instance.title
 
 
 class Conversion(models.Model):
@@ -14,6 +20,7 @@ class Conversion(models.Model):
     pub_time = models.DateTimeField('Publish time', auto_now_add=True)
     slug = models.SlugField(default=" ", max_length=255, blank=True, null=False)
     audio_file = models.FileField(upload_to="audio", blank=True)
+    expiration_time = models.DateTimeField('Burn time', default=get_expiration_date)
 
     def __str__(self):
         return self.title

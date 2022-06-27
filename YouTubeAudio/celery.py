@@ -6,6 +6,8 @@ https://docs.celeryproject.org/en/stable/django/first-steps-with-django.html
 """
 import os
 from celery import Celery
+from celery.schedules import crontab
+
 
 # this code copied from manage.py
 # set the default Django settings module for the 'celery' app.
@@ -23,3 +25,11 @@ app.config_from_object('django.conf:settings', namespace="CELERY")
 
 # load celery.py in django apps
 app.autodiscover_tasks()
+
+
+app.conf.beat_schedule = {
+    "delete_expired_audio": {
+        "task": "audio.tasks.clear_expired",
+        "schedule": crontab(minute=0, hour='*')
+    }
+}

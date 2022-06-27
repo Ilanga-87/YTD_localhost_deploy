@@ -1,6 +1,7 @@
+from pytils.translit import slugify as sg
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import YoutubeDLError
-from datetime import datetime
+import datetime
 
 from YouTubeAudio.celery import app
 from .models import Conversion
@@ -17,7 +18,7 @@ def download(video, video_id):
     ytdl_opts = {
         "quiet": True,
         'cachedir': False,
-        'outtmpl': 'uploads/audio/%(title)s.%(ext)s',
+        'outtmpl': f'uploads/audio/%(title)s.%(ext)s',
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -46,8 +47,14 @@ def send_link(user_mail, link):
     expiration_time = get_expiration_date()
     send_mail(
         "Your audio is ready to download",
-        f"Hi, here is a {link} where you can get your mp3 file. It will be actual till {expiration_time}. If you don't sense what is it, follow that link https://my_site.com/ and we will not disturb you more ",
+        f"Hi, here is a {link} where you can get your mp3 file. It will be actual till {expiration_time.strftime('%d/%m/%Y %H:%M:%S')}. If you don't sense what is it, follow that link https://my_site.com/ and we will not disturb you more ",
         settings.EMAIL_HOST_USER,
         [user_mail]
     )
     return expiration_time
+
+
+@app.task()
+def clear_expired():
+    now = datetime.datetime.now()
+    Conversion.objects.filter(expiration_time__lt=now).delete()
