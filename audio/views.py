@@ -1,17 +1,18 @@
-from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import redirect
 from django.utils.text import slugify
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView, DetailView
+from django.views.generic.edit import FormView
 from django.conf import settings
 from django.http import FileResponse
 
-from celery import chord, chain
+import redis
+import datetime
 
-from .forms import YouTubeURLForm
+
+from .forms import YouTubeURLForm, BlackListForm
 from .models import Conversion
-from .tasks import download, send_link
+from .tasks import download
 from .service import extract_single_from_playlist, get_video_id, generate_slug_tail
 
 
@@ -31,7 +32,7 @@ class ConvertView(CreateView):
         slug_tail = generate_slug_tail(10)
         slug = slugify(f"{video_id}-{slug_tail}")
         instance.video_id = video_id
-        instance.slug = slug #TODO exclusive
+        instance.slug = slug
 
         possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
         if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
@@ -39,9 +40,7 @@ class ConvertView(CreateView):
             return redirect(f"/load-audio-{previous_conversion.slug}")
 
         instance.save()
-
-        link = f"https://my_site.com/{self.success_url}-{slug}"
-        (download.si(video, slug) | send_link.si(user_email, link))()
+        download.delay(video, slug)
 
         return redirect(f"{self.success_url}-{slug}")
 
@@ -92,3 +91,21 @@ class NewView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["message"] = "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
         return context
+
+
+email_black_list = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=1, charset='utf-8', decode_responses=True)
+
+
+class BlackListView(FormView):
+    template_name = 'audio/black_list.html'
+    success_url = '/got-it'
+    form_class = BlackListForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data["user_email"]
+        addition_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+        email_black_list.set(email, addition_time)
+        print(email_black_list.keys())
+        if 'arrtur@gmail.com' in email_black_list.keys():
+            print('Email in black list')
+        return super(BlackListView, self).form_valid(form)

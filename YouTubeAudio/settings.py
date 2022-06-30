@@ -142,7 +142,8 @@ REDIS_PORT = "6379"
 
 CELERY_BROKER_URL = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
 CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
-CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERYD_MAX_TASKS_PER_CHILD = 1
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
