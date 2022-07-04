@@ -5,10 +5,10 @@
     {{ title }}
 {% endblock %}
 
-{% block content %}
+{% block form %}
 
-<!-- Hero Section start -->
-<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg3.jpg' %}">
+<!-- Form Section -->
+<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg.jpg' %}">
     <div class="container">
         <div class="hero-warp">
             <form class="main-search-form" method="POST">
@@ -17,18 +17,10 @@
                      </div>
                 <div class="search-input">
                     {{ form.user_email }}
-                    <!-- <input type="text" placeholder="Search by state, postcode or suburb"> -->
                     <button class="site-btn">Push</button>
                 </div>
-                <p>{{ form.errors }}</p>
                 <p>{{ form.non_field_errors }}</p>
-                <p>{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-    {% endfor %}
-</ul>
-{% endif %}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
             </form>
         </div>
     </div>
