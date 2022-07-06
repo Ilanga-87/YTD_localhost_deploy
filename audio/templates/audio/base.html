@@ -5,12 +5,9 @@
 <head>
 	<title>{% block title %} {% endblock %}</title>
     	<meta charset="UTF-8">
-	<meta name="description" content="Real estate HTML Template">
-	<meta name="keywords" content="real estate, html">
+	<meta name="description" content="{% block description %} {% endblock %}">
+	<meta name="keywords" content="{% block keywords %} {% endblock %}">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Favicon -->
-	<link href="img/favicon.ico" rel="shortcut icon"/>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i,900%7cRoboto:400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
@@ -22,7 +19,7 @@
 	<link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}"/>
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="{% static 'css/style2.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
 
 </head>
 <body>
@@ -32,21 +29,72 @@
 	</div>
 
 	<!-- Header Section -->
-	<header class="header-section">
-		<a href="index.html" class="site-logo">
-			<img src="{% static 'img/logo3.png' %}" alt="">
+	<header
+            {% if form %}
+                class="header-section"
+            {% else %}
+                class="header-section-mini"
+            {% endif %}>
+		<a href="{% url 'index' %}" class="site-logo">
+			<img src="{% static 'img/logo.png' %}" alt="">
 		</a>
 		<nav class="header-nav">
 			<ul class="main-menu">
-				<li><a href="index.html" class="active">Home</a></li>
-				<li><a href="about-us.html">About</a></li>
-				<li><a href="#">Buy</a></li>
+				<li><a href="{% url 'index' %}" class="active">Home</a></li>
+				<li><a href="{% url 'about-us' %}">About</a></li>
+				<li><a href="{% url 'faq' %}">F.A.Q.</a></li>
             </ul>
 		</nav>
 	</header>
 	<!-- Header Section end -->
 
-{% block content %} {% endblock %}
+    {% block form %}
+    {% endblock %}
+
+    {% block main_content %}
+    {% endblock %}
+
+    {% block subcontent %}
+    {% endblock %}
+
+
+    	<!-- Footer Section -->
+	<footer class="footer-section">
+		<div class="container">
+			<div class="row text-white">
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer-widger">
+						<ul>
+							<li><a href="{% url 'about-us' %}">About us</a></li>
+                        </ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer-widger">
+						<ul>
+							<li><a href="{% url 'about-us' %}">Privacy Policy</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer-widger">
+						<ul>
+							<li><a href="#">GitHub</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer-widger">
+						<ul>
+							<li><a href="{% url 'faq' %}">F.A.Q.</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer Section end -->
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>

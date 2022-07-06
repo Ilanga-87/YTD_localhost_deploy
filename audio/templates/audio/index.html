@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block title %}
-    {{ title }}
+    YouTube MP3 converter
 {% endblock %}
 
-{% block content %}
+{% block form %}
 
-<!-- Hero Section start -->
-<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg3.jpg' %}">
+<!-- Form Section -->
+<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg.jpg' %}">
     <div class="container">
         <div class="hero-warp">
             <form class="main-search-form" method="POST">
@@ -18,21 +18,85 @@
                 <div class="search-input">
                     {{ form.video_url }}
                     {{ form.user_email }}
-                    <!-- <input type="text" placeholder="Search by state, postcode or suburb"> -->
-                    <button class="site-btn">Search</button>
+                    <button class="site-btn" type="submit" onclick="submitClicked" id="submit-button">Send</button>
                 </div>
-                <p>{{ form.video_url.errors }}</p>
-                <p>{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-    {% endfor %}
-</ul>
-{% endif %}Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
+                {{ form.non_field_errors }}
+
+                <p>To get mp3 audio file from YouTube video you should input
+                    video URL (e.g. <span style="color:#ffffff">https://www.youtube.com/watch?v=dQw4w9WgXcQ</span>
+                    or <span style="color:#ffffff">https://youtu.be/dQw4w9WgXcQ</span>)
+                    and your email to allow us to send you ready link to download audio. Note that your video should be
+                    <span style="color:#ffffff">max 2 hours duration</span>.</p>
+                <a href="{% url 'privacy' %}">Privacy Policy</a>
             </form>
         </div>
     </div>
 </section>
-<!-- Hero Section end -->
-    
+<!-- Form Section end -->
+
+{% endblock %}
+
+{% block text_header %}
+Easy get mp3 audio from YouTube
+{% endblock %}
+
+{% block main_content %}
+    <section class="intro-section spad">
+		<div class="container">
+			<div class="row intro-first">
+				<div class="col-lg-12">
+					<div class="about-text">
+ Our site is an online web app to download mp3 audio files from YouTube to your computer or
+    mobile phone directly. To download mp3 online, you need to copy the YouTube URL/link and paste it in the above text box.
+
+    Downloader will extract YouTube video and convert it to mp3 file. It can take a lot of time especially for long files.
+    So to avoid you to wait the end of the process we ask for your email.
+
+    We will  send you email with link where you can download ready file to your computer, android or iPhone.
+    </div>
+				</div>
+			</div>
+{% endblock %}
+{% block subcontent %}
+    	    <div class="row intro-first">
+        <div class="col-lg-6 order-lg-2">
+            <img src="{% static 'img/address_bar.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <div class="about-text">
+                <h3>How to get link from YouTube in browser</h3>
+                <p>The easiest way is just to copy it from the address bar in your browser. Select all text in the string,
+                then press Ctrl+C (or right mouse button and select "Copy" in the list). After this you can put your cursor
+                into field in our form and press Ctrl+V (or right mouse button and select "Paste" in the list.). Then
+                    just press the SEND button</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{% static 'img/share.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6 ">
+            <div class="about-text">
+                <p>Also you can find a button SHARE below the video. After this you will see a little pop-up window
+                    where you can just press COPY. And paste the link in our form as described above. Of course,
+                    do not forget to press SEND button
+            </div>
+        </div>
+    </div>
+        <div class="row intro-first spad">
+        <div class="col-lg-6 order-lg-2">
+            <img src="{% static 'img/share_app.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <div class="about-text">
+                <h3>How to get link from YouTube in mobile app</h3>
+                <p>In your YouTube mobile app there is a row of icons behind the video description. Select SHARE icon and press it.
+                After that you will see COPY icon in left top corner. Press it and you will get your link. Now just put it
+                in the first form field with long pressing and PASTE option. Then press SEND button</p>
+            </div>
+        </div>
+    </div>
+        </div>
+        </section>
 {% endblock %}

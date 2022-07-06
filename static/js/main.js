@@ -4,7 +4,7 @@
   Version: 1.0
 --------------------------------------
 ======================================*/
-
+console.log("hello")
 
 'use strict';
 
@@ -46,32 +46,12 @@ $(window).on('load', function() {
         type: 'iframe'
     });
 
-	/*--------------------------
-		Loans calculator
-	------------------------------*/
-	$('#lc-submit').on('click', function(e){
-		var lc_price    = $('#lc-price').val();
-		var lc_interest = $('#lc-interest').val();
-		var lc_dpay     = $('#lc-dpay').val();
-		var weeks = 52;
-
-		// Minus Down Payment 
-		lc_price = lc_price - lc_dpay;
-
-		// Find percentage  
-		var perc = (lc_price/100) * lc_interest;
-
-		// Add percentage to main price 
-		lc_price = (lc_price + perc);
-
-		// Weekly pay result
-		var weekly_pay = (lc_price / weeks).toFixed(2);
-
-
-		if (!isNaN(weekly_pay)) {
-			$('#lc-result').text('$' + weekly_pay);
-		}
-	})
 
 })(jQuery);
+
+function submitClicked(){
+	setTimeout(function(){
+		$("#submit-button").prop("disabled", false);
+	}, 15000);
+	}
 

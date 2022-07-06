@@ -2,40 +2,20 @@
 {% load static %}
 
 {% block title %}
-    {{ title }}
+    YouTube - mp3 | Download your audio
 {% endblock %}
 
-{% block content %}
-    <!-- Hero Section start -->
-    <section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg3.jpg' %}">
-        <div class="container">
-            <div class="hero-warp">
-                <form class="main-search-form" method="POST">
-                    {% csrf_token %}
-                    <div class="search-type">
-                         </div>
-                    <div class="search-input">
-                        {{ form.video_url }}
-                        <!-- <input type="text" placeholder="Search by state, postcode or suburb"> -->
-                        <button class="site-btn">Search</button>
-                    </div>
-                    <p>{{ form.video_url.errors }}</p>
-                    <p>{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-        {% endfor %}
-    </ul>
-    {% endif %}<a href="{{ conversion.audio_file.url }}">ssssssssssssssssssssss</a>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
-                </form>
-            </div>
+{% block subcontent %}
+
+    <section class="intro-section spad-down">
+		<div class="container">
+			<div class="section-title">
+				<h3>Now you can download your video:</h3>
+                <p><a href="{{ conversion.audio_file.url }}">{{ conversion.title }}</a></p>
+                <p>This link expired at: {{ conversion.expiration_time }}</p>
+			</div>
         </div>
     </section>
-    <!-- Hero Section end -->
-
-
-    {{ message }}
-    <h1>{{ conversion.title }}</h1>
-    <p><a href="{{ conversion.audio_file.url }}">ssssssssssssss</a></p>
 
 {% endblock %}
+

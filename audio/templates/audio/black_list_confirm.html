@@ -1,0 +1,31 @@
+{%  extends 'audio/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block form %}
+
+<!-- Form Section -->
+<section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg.jpg' %}">
+    <div class="container">
+        <div class="hero-warp">
+            <form class="main-search-form" method="POST">
+                {% csrf_token %}
+                <div class="search-type">
+                     </div>
+                <div class="search-input">
+                    {{ form.conf_code }}
+                    <button class="site-btn">Confirm</button>
+                </div>
+                <p>{{ form.non_field_errors }}</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
+
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Form Section end -->
+
+{% endblock %}

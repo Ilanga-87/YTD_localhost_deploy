@@ -18,17 +18,21 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from audio.views import ConvertView, SuccessView, LoadView, NewView, MyView, download_audio
+from audio.views import ConvertView, SuccessView, LoadView, ConfirmationView, download_audio, \
+    BlackListView, ConfirmedBL, WaitContext
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('download-audio/<str:title>', download_audio),
-    # path('', get_link, name='get_link'),
     path('', ConvertView.as_view(), name='index'),
-    path('success-page', NewView.as_view()),
     path('success-page-<str:slug>', SuccessView.as_view(), name='success-page'),
-    path('new-page', NewView.as_view()),
     path('load-audio-<str:slug>', LoadView.as_view(), name='load-page'),
+    path('download-audio-<str:title>', download_audio, name='download-audio'),
+    path('do-not-disturb', BlackListView.as_view(), name='add-to-blacklist'),
+    path('confirm-blacklist', ConfirmationView.as_view(), name='confirm-blacklist'),
+    path('confirmed', ConfirmedBL.as_view(), name='confirmed-bl'),
+    path('about-us', WaitContext.as_view(), name='about-us'),
+    path('faq', WaitContext.as_view(), name='faq'),
+    path('privacy', WaitContext.as_view(), name='privacy'),
 
 
 ]
