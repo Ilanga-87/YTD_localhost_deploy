@@ -1,3 +1,9 @@
 Django~=4.0.4
 redis~=4.3.4
 celery~=5.2.7
+youtube-dl
+django-celery-beat
+django-cleanup
+gevent
+flower
+psycopg2
