@@ -11,8 +11,15 @@ import redis
 from .forms import YouTubeURLForm, BlackListForm, ConfirmationForm
 from .models import Conversion
 from .tasks import download
-from .service import extract_single_from_playlist, get_video_id, generate_slug_tail, \
-    get_expiration_date, send_link, send_confirmation_mail, generate_confirmation_code
+from .service import (
+    extract_single_from_playlist,
+    get_video_id,
+    generate_slug_tail,
+    get_expiration_date,
+    send_link,
+    send_confirmation_mail,
+    generate_confirmation_code
+)
 
 
 # Create your views here.
@@ -61,8 +68,20 @@ def download_audio(request, title):
     return audio_file
 
 
-response_for_black_list = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=2, charset='utf-8', decode_responses=True)
-email_black_list = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=1, charset='utf-8', decode_responses=True)
+response_for_black_list = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=2,
+    charset='utf-8',
+    decode_responses=True,
+)
+email_black_list = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=1,
+    charset='utf-8',
+    decode_responses=True,
+)
 
 
 class BlackListView(FormView):
@@ -105,3 +124,8 @@ class WaitContext(TemplateView):
         context = super(WaitContext, self).get_context_data()
         context["message"] = "Content is arriving... Please wait"
         return context
+
+
+class PrivacyPolicy(TemplateView):
+    template_name = "privacy_policy.html"
+

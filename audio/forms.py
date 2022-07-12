@@ -6,8 +6,20 @@ import redis
 
 from .models import Conversion
 
-response_for_black_list = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=2, charset='utf-8', decode_responses=True)
-email_black_list = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=1, charset='utf-8', decode_responses=True)
+response_for_black_list = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=2,
+    charset='utf-8',
+    decode_responses=True,
+)
+email_black_list = redis.StrictRedis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=1,
+    charset='utf-8',
+    decode_responses=True,
+)
 
 
 class YouTubeURLForm(ModelForm):

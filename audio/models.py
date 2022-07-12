@@ -3,12 +3,8 @@ from django.urls import reverse
 
 from .service import get_expiration_date
 
+
 # Create your models here.
-
-
-def rename_cyrillic_audio(instance, filename):
-    path = "audio/"
-    title = instance.title
 
 
 class Conversion(models.Model):

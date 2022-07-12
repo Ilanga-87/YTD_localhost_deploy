@@ -14,26 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from audio.views import ConvertView, SuccessView, LoadView, ConfirmationView, download_audio, \
-    BlackListView, ConfirmedBL, WaitContext
+from audio.views import WaitContext, PrivacyPolicy
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', ConvertView.as_view(), name='index'),
-    path('success-page-<str:slug>', SuccessView.as_view(), name='success-page'),
-    path('load-audio-<str:slug>', LoadView.as_view(), name='load-page'),
-    path('download-audio-<str:title>', download_audio, name='download-audio'),
-    path('do-not-disturb', BlackListView.as_view(), name='add-to-blacklist'),
-    path('confirm-blacklist', ConfirmationView.as_view(), name='confirm-blacklist'),
-    path('confirmed', ConfirmedBL.as_view(), name='confirmed-bl'),
+    path('', include("audio.urls")),
     path('about-us', WaitContext.as_view(), name='about-us'),
     path('faq', WaitContext.as_view(), name='faq'),
-    path('privacy', WaitContext.as_view(), name='privacy'),
-
+    path('privacy-policy', PrivacyPolicy.as_view(), name='privacy'),
 
 ]
 
