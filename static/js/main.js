@@ -4,8 +4,6 @@
   Version: 1.0
 --------------------------------------
 ======================================*/
-console.log("hello")
-
 'use strict';
 
 $(window).on('load', function() {

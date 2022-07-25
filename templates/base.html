@@ -35,10 +35,14 @@
             {% else %}
                 class="header-section-mini"
             {% endif %}>
-		<a href="{% url 'index' %}" class="site-logo">
+		<div class=""><a href="{% url 'index' %}" class="site-logo">
 			<img src="{% static 'img/logo.png' %}" alt="">
 		</a>
-        <p class="site-description text-white" style="font-size: 38px">Easy get mp3 audio from YouTube</p>
+        </div>
+        <div class="d-none d-sm-block"><p class="site-description text-white" style="font-size: 36px">Easy get mp3 from YouTube</p>
+            </div>
+        <div class="d-sm-none"><p class="site-description text-white" style="font-size: 18px">Get mp3 from YouTube</p>
+            </div>
 		<nav class="header-nav">
 			<ul class="main-menu">
 				<li><a href="{% url 'index' %}">Home</a></li>
