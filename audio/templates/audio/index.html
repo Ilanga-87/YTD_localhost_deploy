@@ -11,6 +11,8 @@
 <section class="hero-section set-bg" data-setbg="{% static 'img/hero-bg.jpg' %}">
     <div class="container">
         <div class="hero-warp">
+            <h2 class="text-white">Just fill this 2:</h2>
+            <br>
             <form class="main-search-form" method="POST">
                 {% csrf_token %}
                 <div class="search-type">
@@ -18,7 +20,7 @@
                 <div class="search-input">
                     {{ form.video_url }}
                     {{ form.user_email }}
-                    <button class="site-btn" type="submit" onclick="submitClicked" id="submit-button">Send</button>
+                    <button class="site-btn" type="submit" onclick="submitClicked()" id="submit-button">Send</button>
                 </div>
                 {{ form.non_field_errors }}
 
@@ -42,7 +44,7 @@
 			<div class="row intro-first">
 				<div class="col-lg-12">
 					<div class="about-text">
-                        <h1>Easy get mp3 audio from YouTube</h1>
+                        <h1>Get mp3 audio from YouTube</h1>
     <p>Our site is an online web app to download mp3 audio files from YouTube to your computer or
     mobile phone directly. To download mp3 online, you need to copy the YouTube URL/link and paste it in the above text box.
 

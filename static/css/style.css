@@ -266,6 +266,12 @@ Header section
 	padding: 39px 0;
 }
 
+.site-description {
+	float: left;
+	display: inline-block;
+	padding: 39px 20px;
+}
+
 .main-menu {
 	display: inline-block;
 	padding-right: 30px;

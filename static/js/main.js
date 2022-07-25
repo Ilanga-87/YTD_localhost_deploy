@@ -53,5 +53,5 @@ function submitClicked(){
 	setTimeout(function(){
 		$("#submit-button").prop("disabled", false);
 	}, 15000);
-	}
+	}(jQuery);
 
