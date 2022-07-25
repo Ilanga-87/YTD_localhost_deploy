@@ -38,7 +38,7 @@ def send_link(user_mail, link):
     expiration_time = get_expiration_date()
     send_mail(
         "Your audio is ready to download",
-        f"Hi, here is a {link} where you can get your mp3 file. It will be actual till {expiration_time.strftime('%d/%b/%Y %H:%M:%S')}. \nIf you don't sense what is it, follow that link https://my_site.com/do-not-disturb and we will not disturb you more ",
+        f"Hi, here is a link where you can get your mp3 file:\n\n\t{link} \n\n It will be actual till {expiration_time.strftime('%d/%b/%Y %H:%M:%S')}. \n\nBest regards, mysite.com.\n\n You've received this email because it was entered on mysite.com. Don't want to receive our emails? Please, add your email into silent list here: mysite.com/do-not-disturb.",
         settings.EMAIL_HOST_USER,
         [user_mail]
     )
@@ -47,7 +47,7 @@ def send_link(user_mail, link):
 def send_sad_letter(user_mail, error):
     send_mail(
         "Sorry, but something got wrong",
-        f"Hi, we are very sad, but your mp3 conversion gone wrong. Here is the description of problem:\n\n \t {error}",
+        f"Hi, we are unfortunate, but your mp3 conversion went wrong. Here is the description of problem:\n\n\t {error} \n\nBest regards, mysite.com.\n\n You've received this email because it was entered on mysite.com. Don't want to receive our emails? Please, add your email to the silent list here: mysite.com/do-not-disturb.",
         settings.EMAIL_HOST_USER,
         [user_mail]
     )
@@ -56,7 +56,7 @@ def send_sad_letter(user_mail, error):
 def send_confirmation_mail(user_mail, conf_code):
     send_mail(
         "Confirm your email",
-        f"Your confirmation code is \n {conf_code} \nYou can enter it following this link: https://my-site/confirm-blacklist",
+        f"Hi, your confirmation code is \n\n\t {conf_code} \n\nYou can enter it following this link: https://my-site/confirm-blacklist\n\nIf you don't have any idea about this letter just delete it. \n\nBest regards, mysite.com",
         settings.EMAIL_HOST_USER,
         [user_mail]
     )
