@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from os import getenv
+import local_config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv("SECRET_KEY")
+SECRET_KEY = local_config.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    getenv("APP_HOST")
+    local_config.DJANGO_APP_HOST
 ]
 
 
@@ -84,11 +85,11 @@ WSGI_APPLICATION = 'YouTubeAudio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': local_config.DJANGO_DB_NAME,
+        'USER': local_config.DJANGO_DB_USER,
+        'PASSWORD': local_config.DJANGO_DB_PASSWORD,
+        'HOST': local_config.DJANGO_DB_HOST,
+        'PORT': '5432',
     }
 }
 
@@ -154,5 +155,26 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = getenv("EMAIL_ADDR")
-EMAIL_HOST_PASSWORD = getenv("EMAIL_PASS")
+EMAIL_HOST_USER = local_config.DJANGO_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = local_config.DJANGO_EMAIL_HOST_PASSWORD
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+    },
+}
