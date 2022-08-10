@@ -7,7 +7,7 @@ from .views import (
     download_audio,
     BlackListView,
     ConfirmationView,
-    ConfirmedBL,
+    ConfirmedBlackListView,
 )
 
 urlpatterns = [
@@ -16,6 +16,6 @@ urlpatterns = [
     path('load-audio-<str:slug>', LoadView.as_view(), name='load-page'),
     path('download-audio-<str:title>', download_audio, name='download-audio'),
     path('do-not-disturb', BlackListView.as_view(), name='add-to-blacklist'),
-    path('confirm-blacklist', ConfirmationView.as_view(), name='confirm-blacklist'),
-    path('confirmed', ConfirmedBL.as_view(), name='confirmed-bl'),
+    path('confirm-blacklist/<int:pk>', ConfirmationView.as_view(), name='confirm-blacklist'),
+    path('confirmed/<int:pk>', ConfirmedBlackListView.as_view(), name='confirmed-bl'),
 ]

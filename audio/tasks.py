@@ -4,7 +4,7 @@ from youtube_dl.utils import YoutubeDLError
 from django.utils import timezone
 
 from YouTubeAudio.celery import app
-from .models import Conversion
+from .models import Conversion, SilentList
 from .service import send_link, send_sad_letter
 
 
@@ -49,3 +49,8 @@ def download(video, video_id):
 def clear_expired():
     now = timezone.now()
     Conversion.objects.filter(expiration_time__lt=now).delete()
+
+
+@app.task()
+def clear_empty():
+    SilentList.objects.filter(confirmed_email__exact="").delete()

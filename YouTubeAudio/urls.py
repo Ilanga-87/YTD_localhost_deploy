@@ -18,14 +18,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from audio.views import WaitContext, PrivacyPolicy
+from audio.views import WaitContextView, PrivacyPolicyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("audio.urls")),
-    path('about-us', WaitContext.as_view(), name='about-us'),
-    path('faq', WaitContext.as_view(), name='faq'),
-    path('privacy-policy', PrivacyPolicy.as_view(), name='privacy'),
+    path('about-us', WaitContextView.as_view(), name='about-us'),
+    path('faq', WaitContextView.as_view(), name='faq'),
+    path('privacy-policy', PrivacyPolicyView.as_view(), name='privacy'),
 
 ]
 

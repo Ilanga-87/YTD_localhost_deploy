@@ -21,5 +21,12 @@ class Conversion(models.Model):
     def __str__(self):
         return self.title
 
+
+class SilentList(models.Model):
+    user_email = models.EmailField(max_length=256)
+    confirmation_code = models.CharField(max_length=4)
+    input_code = models.CharField(max_length=4, default="")
+    confirmed_email = models.EmailField(max_length=256, default="")
+
     def get_absolute_url(self):
-        return reverse('audio-page', args=self.slug)
+        return reverse('confirmed-bl', kwargs={'pk': self.pk})

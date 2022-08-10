@@ -1,15 +1,12 @@
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.text import slugify
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView, DetailView
-from django.views.generic.edit import FormView
-from django.conf import settings
 from django.http import FileResponse
 
-import redis
-
 from .forms import YouTubeURLForm, BlackListForm, ConfirmationForm
-from .models import Conversion
+from .models import Conversion, SilentList
 from .tasks import download
 from .service import (
     extract_single_from_playlist,
@@ -68,64 +65,56 @@ def download_audio(request, title):
     return audio_file
 
 
-response_for_black_list = redis.StrictRedis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=2,
-    charset='utf-8',
-    decode_responses=True,
-)
-email_black_list = redis.StrictRedis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=1,
-    charset='utf-8',
-    decode_responses=True,
-)
-
-
-class BlackListView(FormView):
-    template_name = 'audio/black_list.html'
-    success_url = '/confirm-blacklist'
+class BlackListView(CreateView):
+    model = SilentList
     form_class = BlackListForm
+    template_name = 'audio/black_list.html'
 
     def form_valid(self, form):
+        instance = form.save(commit=False)
         email = form.cleaned_data["user_email"]
         conf_code = generate_confirmation_code(4)
-        response_for_black_list.set(conf_code, email)
+        instance.confirmation_code = conf_code
         send_confirmation_mail(email, conf_code)
+        instance.save()
         return super(BlackListView, self).form_valid(form)
 
+    def get_success_url(self):
+        return reverse('confirm-blacklist', kwargs={'pk': self.object.pk})
 
-class ConfirmationView(FormView):
-    template_name = "audio/black_list_confirm.html"
-    success_url = '/confirmed'
+
+class ConfirmationView(UpdateView):
+    model = SilentList
     form_class = ConfirmationForm
+    template_name_suffix = "_confirm"
 
     def form_valid(self, form):
-        conf_code = form.cleaned_data["conf_code"]
-        email_black_list.set(response_for_black_list.getdel(conf_code), conf_code)
+        instance = form.save(commit=False)
+        user_email = form.cleaned_data["user_email"]
+        confirmation_code = form.cleaned_data["input_code"]
+        if SilentList.objects.get(confirmation_code=confirmation_code):
+            instance.confirmed_email = user_email
+        instance.save()
         return super(ConfirmationView, self).form_valid(form)
 
 
-class ConfirmedBL(TemplateView):
+class ConfirmedBlackListView(TemplateView):
     template_name = "audio/black_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
-        context = super(ConfirmedBL, self).get_context_data()
+        context = super(ConfirmedBlackListView, self).get_context_data()
         context["message"] = "Now your email is in black list. We will never disturb you again."
         return context
 
 
-class WaitContext(TemplateView):
+class WaitContextView(TemplateView):
     template_name = "audio/black_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
-        context = super(WaitContext, self).get_context_data()
+        context = super(WaitContextView, self).get_context_data()
         context["message"] = "Content is arriving... Please wait"
         return context
 
 
-class PrivacyPolicy(TemplateView):
+class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
-

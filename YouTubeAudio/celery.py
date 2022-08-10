@@ -31,5 +31,9 @@ app.conf.beat_schedule = {
     "delete_expired_audio": {
         "task": "audio.tasks.clear_expired",
         "schedule": crontab(minute=0, hour='*')
+    },
+    "delete_empty_blacklist": {
+        "task": "audio.tasks.clear_empty",
+        "schedule": crontab(minute=0, hour=168)
     }
 }
