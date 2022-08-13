@@ -140,13 +140,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / "uploads/audio"
 MEDIA_URL = "/download-audio/"
 
+# AWS Credentials
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-REDIS_HOST = "127.0.0.1"
-REDIS_PORT = "6379"
+# Celery
+BROKER_URL = "sqs://"
 
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'YTDCeleryBroker'
+CELERY_RESULT_BACKEND = None # Disabling the results backend
 
-CELERY_BROKER_URL = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
-CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
+BROKER_TRANSPORT_OPTIONS = {
+    'region': 'ap-south-1',
+    'polling_interval': 20,
+}
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERYD_MAX_TASKS_PER_CHILD = 1
 
