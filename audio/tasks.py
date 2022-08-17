@@ -1,3 +1,5 @@
+import logging
+
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import YoutubeDLError
 

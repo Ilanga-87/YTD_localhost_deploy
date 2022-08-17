@@ -11,7 +11,6 @@ from celery.schedules import crontab
 
 # this code copied from manage.py
 # set the default Django settings module for the 'celery' app.
-# from YouTubeAudio import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'YouTubeAudio.settings')
 
@@ -34,6 +33,6 @@ app.conf.beat_schedule = {
     },
     "delete_empty_blacklist": {
         "task": "audio.tasks.clear_empty",
-        "schedule": crontab(minute=0, hour=168)
+        "schedule": crontab(minute=0, hour=0, day_of_month=2)
     }
 }

@@ -1,3 +1,7 @@
+import logging
+
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
@@ -43,9 +47,11 @@ class ConvertView(CreateView):
             previous_conversion.save()
             send_link(instance.user_email, f"https://my_site.com/load-audio-{previous_conversion.slug}")
             return redirect(f"{self.success_url}-{previous_conversion.slug}")
-
+        file_logger.info("TEST 00")
         instance.save()
+        file_logger.info("TEST 01")
         download.delay(video, slug)
+        file_logger.info("TEST 02")
 
         return redirect(f"{self.success_url}-{slug}")
 
@@ -118,3 +124,17 @@ class WaitContextView(TemplateView):
 
 class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
+
+
+logger = logging.getLogger("thelogger")
+file_logger = logging.getLogger("thelogger.file")
+
+
+def index(request):
+    logger.info(
+        "This will be written to the console, should be seen in the gunicorn log"
+    )
+    file_logger.info(
+        "This will be written to the file defined in the settings, given that the gunicorn has relevant rights"
+    )
+    return HttpResponse("The index")
