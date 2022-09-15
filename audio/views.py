@@ -39,13 +39,13 @@ class ConvertView(CreateView):
         instance.video_id = video_id
         instance.slug = slug
 
-        possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
-        if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
-            previous_conversion = Conversion.objects.get(video_id=instance.video_id)
-            previous_conversion.expiration_time = get_expiration_date(1)
-            previous_conversion.save()
-            send_link(instance.user_email, previous_conversion.title, f"https://mp3-from-youtube.com/load-audio-{previous_conversion.slug}")
-            return redirect(f"{self.success_url}-{previous_conversion.slug}")
+        # possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
+        # if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
+        #     previous_conversion = Conversion.objects.get(video_id=instance.video_id)
+        #     previous_conversion.expiration_time = get_expiration_date(1)
+        #     previous_conversion.save()
+        #     send_link(instance.user_email, previous_conversion.title, f"https://mp3-from-youtube.com/load-audio-{previous_conversion.slug}")
+        #     return redirect(f"{self.success_url}-{previous_conversion.slug}")
         file_logger.info("TEST 00")
         instance.save()
         file_logger.info("TEST 01")
