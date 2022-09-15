@@ -1,7 +1,6 @@
 import logging
 
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
@@ -43,9 +42,9 @@ class ConvertView(CreateView):
         possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
         if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
             previous_conversion = Conversion.objects.get(video_id=instance.video_id)
-            previous_conversion.expiration_time = get_expiration_date()
+            previous_conversion.expiration_time = get_expiration_date(1)
             previous_conversion.save()
-            send_link(instance.user_email, f"https://my_site.com/load-audio-{previous_conversion.slug}")
+            send_link(instance.user_email, previous_conversion.title, f"https://mp3-from-youtube.com/load-audio-{previous_conversion.slug}")
             return redirect(f"{self.success_url}-{previous_conversion.slug}")
         file_logger.info("TEST 00")
         instance.save()
