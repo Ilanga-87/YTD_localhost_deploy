@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     local_config.DJANGO_APP_HOST
 ]
+CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com"]
 
 # Application definition
 
