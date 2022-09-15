@@ -30,8 +30,9 @@ class SilentList(models.Model):
     """The model that contains silent list of emails."""
     user_email = models.EmailField(max_length=256)
     confirmation_code = models.CharField(max_length=4)
-    input_code = models.CharField(max_length=4, default="")
-    confirmed_email = models.EmailField(max_length=256, default="")
+    confirmation = models.BooleanField(default=False)
+    # input_code = models.CharField(max_length=4, default="")
+    # confirmed_email = models.EmailField(max_length=256, default="")
 
     def get_absolute_url(self):
         return reverse('confirmed-silent-list', kwargs={'pk': self.pk})
