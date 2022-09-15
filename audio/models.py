@@ -8,6 +8,10 @@ from .service import get_expiration_date
 
 
 class Conversion(models.Model):
+    """The main model that contains information about conversions.
+    Fields `user_email` and `video_url` come from form.
+    Fields `video_id` and `title` come from ytdl module.
+    All other fields populate by views."""
     user_email = models.EmailField(max_length=254, default="")
     video_id = models.CharField("ID video", default="", max_length=100)
     video_url = models.CharField('URL to Youtube', max_length=255)
@@ -23,6 +27,7 @@ class Conversion(models.Model):
 
 
 class SilentList(models.Model):
+    """The model that contains silent list of emails."""
     user_email = models.EmailField(max_length=256)
     confirmation_code = models.CharField(max_length=4)
     input_code = models.CharField(max_length=4, default="")

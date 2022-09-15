@@ -1,5 +1,3 @@
-import logging
-
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import YoutubeDLError
 
@@ -12,6 +10,7 @@ from .service import send_link, send_sad_letter
 
 @app.task(autoretry_for=(Exception,), retry_kwargs={'max_retries': 5}, retry_backoff=True)
 def download(video, video_id):
+    """The function that download and convert video to mp3 file by ytdl module"""
     instance = Conversion.objects.get(slug=video_id)
     instance.video_url = video
 
@@ -42,17 +41,19 @@ def download(video, video_id):
                 link = f"https://my_site.com/load-audio-{instance.slug}"
                 send_link(instance.user_email, instance.title, link)
                 return {"status": True}
-    except YoutubeDLError as err:
+    except YoutubeDLError:
         send_sad_letter(instance.user_email, instance.title)
         instance.delete()
 
 
 @app.task()
 def clear_expired():
+    """Delete expired files and db instances"""
     now = timezone.now()
     Conversion.objects.filter(expiration_time__lt=now).delete()
 
 
 @app.task()
 def clear_empty():
+    """Delete unconfirmed emails"""
     SilentList.objects.filter(confirmed_email__exact="").delete()

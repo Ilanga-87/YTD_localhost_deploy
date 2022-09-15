@@ -1,6 +1,3 @@
-import logging
-
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
@@ -15,8 +12,6 @@ from .service import (
     extract_single_from_playlist,
     get_video_id,
     generate_slug_tail,
-    get_expiration_date,
-    send_link,
     send_confirmation_mail,
     generate_confirmation_code
 )
@@ -25,6 +20,7 @@ from .service import (
 # Create your views here.
 
 class ConvertView(CreateView):
+    """The view for main page"""
     model = Conversion
     form_class = YouTubeURLForm
     template_name = "audio/index.html"
@@ -46,31 +42,32 @@ class ConvertView(CreateView):
         #     previous_conversion.save()
         #     send_link(instance.user_email, previous_conversion.title, f"https://mp3-from-youtube.com/load-audio-{previous_conversion.slug}")
         #     return redirect(f"{self.success_url}-{previous_conversion.slug}")
-        file_logger.info("TEST 00")
         instance.save()
-        file_logger.info("TEST 01")
-        download.delay(video, slug)
-        file_logger.info("TEST 02")
+        download.delay(video, slug)  # deferred processing
 
         return redirect(f"{self.success_url}-{slug}")
 
 
 class SuccessView(DetailView):
+    """Return page for redirection in case of correct form filling"""
     model = Conversion
     template_name = "audio/success_page.html"
 
 
 class LoadView(DetailView):
+    """Return page with link to audio"""
     model = Conversion
     template_name = "audio/load_audio.html"
 
 
 def download_audio(request, title):
+    """The function that give the audio to user"""
     audio_file = FileResponse(open(f'uploads/audio/{title}', 'rb'), as_attachment=True)
     return audio_file
 
 
 class SilentListView(CreateView):
+    """Return the form to adding email in silent list"""
     model = SilentList
     form_class = SilentListForm
     template_name = 'audio/silent_list.html'
@@ -89,6 +86,7 @@ class SilentListView(CreateView):
 
 
 class ConfirmationView(UpdateView):
+    """Here user must confirm his email to add it in silent list"""
     model = SilentList
     form_class = ConfirmationForm
     template_name_suffix = "_confirm"
@@ -104,6 +102,7 @@ class ConfirmationView(UpdateView):
 
 
 class ConfirmedSilentListView(TemplateView):
+    """Return page in case of success adding to silent list"""
     template_name = "audio/silent_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
@@ -113,6 +112,7 @@ class ConfirmedSilentListView(TemplateView):
 
 
 class WaitContextView(TemplateView):
+    """Just dummy template view for pages without content"""
     template_name = "audio/silent_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
@@ -123,17 +123,3 @@ class WaitContextView(TemplateView):
 
 class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
-
-
-logger = logging.getLogger("thelogger")
-file_logger = logging.getLogger("thelogger.file")
-
-
-def index(request):
-    logger.info(
-        "This will be written to the console, should be seen in the gunicorn log"
-    )
-    file_logger.info(
-        "This will be written to the file defined in the settings, given that the gunicorn has relevant rights"
-    )
-    return HttpResponse("The index")

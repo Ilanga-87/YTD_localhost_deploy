@@ -5,6 +5,7 @@ from .models import Conversion, SilentList
 
 
 class YouTubeURLForm(ModelForm):
+    """The form for main page"""
     video_url = forms.CharField(widget=forms.URLInput(attrs={"placeholder": "YouTube URL"}), label='')
     user_email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Your E-mail"}))
 
@@ -25,6 +26,7 @@ class YouTubeURLForm(ModelForm):
 
 
 class SilentListForm(ModelForm):
+    """The form for adding in silent list"""
     user_email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Your E-mail"}))
 
     class Meta:
@@ -40,7 +42,7 @@ class SilentListForm(ModelForm):
 
 
 class ConfirmationForm(ModelForm):
-
+    """The form for confirmation adding in silent list"""
     class Meta:
         model = SilentList
         fields = ['user_email', 'input_code']

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    YouTube - mp3 | Download your audio
+    MP3 from YouTube | Download your audio
 {% endblock %}
 
 {% block subcontent %}
@@ -10,8 +10,8 @@
     <section class="intro-section spad-down">
 		<div class="container">
 			<div class="section-title">
-				<h3>Now you can download your video:</h3>
-                <p><a href="{{ conversion.audio_file.url }}">{{ conversion.title }}</a></p>
+				<h3>Now you can download your audio:</h3>
+                <p><a href="{{ conversion.audio_file.url }}" download="">{{ conversion.title }}</a></p>
                 <p>This link expired on: {{ conversion.expiration_time }}</p>
 			</div>
         </div>
