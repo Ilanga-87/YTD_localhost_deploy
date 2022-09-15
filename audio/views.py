@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView, DetailView
 from django.http import FileResponse
 
-from .forms import YouTubeURLForm, BlackListForm, ConfirmationForm
+from .forms import YouTubeURLForm, SilentListForm, ConfirmationForm
 from .models import Conversion, SilentList
 from .tasks import download
 from .service import (
@@ -71,10 +71,10 @@ def download_audio(request, title):
     return audio_file
 
 
-class BlackListView(CreateView):
+class SilentListView(CreateView):
     model = SilentList
-    form_class = BlackListForm
-    template_name = 'audio/black_list.html'
+    form_class = SilentListForm
+    template_name = 'audio/silent_list.html'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -83,10 +83,10 @@ class BlackListView(CreateView):
         instance.confirmation_code = conf_code
         send_confirmation_mail(email, conf_code)
         instance.save()
-        return super(BlackListView, self).form_valid(form)
+        return super(SilentListView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('confirm-blacklist', kwargs={'pk': self.object.pk})
+        return reverse('confirm-silent-list', kwargs={'pk': self.object.pk})
 
 
 class ConfirmationView(UpdateView):
@@ -104,17 +104,17 @@ class ConfirmationView(UpdateView):
         return super(ConfirmationView, self).form_valid(form)
 
 
-class ConfirmedBlackListView(TemplateView):
-    template_name = "audio/black_list_thank_you.html"
+class ConfirmedSilentListView(TemplateView):
+    template_name = "audio/silent_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
-        context = super(ConfirmedBlackListView, self).get_context_data()
-        context["message"] = "Now your email is in black list. We will never disturb you again."
+        context = super(ConfirmedSilentListView, self).get_context_data()
+        context["message"] = "Now your email is in silent list. We will never disturb you again."
         return context
 
 
 class WaitContextView(TemplateView):
-    template_name = "audio/black_list_thank_you.html"
+    template_name = "audio/silent_list_thank_you.html"
 
     def get_context_data(self, **kwargs):
         context = super(WaitContextView, self).get_context_data()

@@ -56,7 +56,7 @@ def send_sad_letter(user_mail, error):
 def send_confirmation_mail(user_mail, conf_code):
     send_mail(
         "Confirm your email",
-        f"Hi, your confirmation code is \n\n\t {conf_code} \n\nYou can enter it following this link: https://my-site/confirm-blacklist\n\nIf you don't have any idea about this letter just delete it. \n\nBest regards, mysite.com",
+        f"Hi, your confirmation code is \n\n\t {conf_code} \n\nYou can enter it following this link: https://my-site/confirm-silent-list\n\nIf you don't have any idea about this letter just delete it. \n\nBest regards, mysite.com",
         settings.EMAIL_HOST_USER,
         [user_mail]
     )

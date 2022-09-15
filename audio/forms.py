@@ -18,13 +18,13 @@ class YouTubeURLForm(ModelForm):
         user_email = cleaned_data.get("user_email")
 
         if SilentList.objects.filter(confirmed_email=user_email):
-            raise forms.ValidationError('Email in black list', code='black_list')
+            raise forms.ValidationError('Email in silent list', code='silent_list')
 
         if video_url[:16] != 'https://youtu.be' and video_url[:19] != 'https://www.youtube':
             raise forms.ValidationError('Please check your link', code='start_with')
 
 
-class BlackListForm(ModelForm):
+class SilentListForm(ModelForm):
     user_email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Your E-mail"}))
 
     class Meta:
@@ -32,11 +32,11 @@ class BlackListForm(ModelForm):
         fields = ['user_email']
 
     def clean(self):
-        cleaned_data = super(BlackListForm, self).clean()
+        cleaned_data = super(SilentListForm, self).clean()
         email = cleaned_data.get("user_email")
 
         if SilentList.objects.filter(confirmed_email=email):
-            raise forms.ValidationError('This email is already in black list', code='black_list_exists')
+            raise forms.ValidationError('This email is already in silent list', code='silent_list_exists')
 
 
 class ConfirmationForm(ModelForm):
@@ -51,4 +51,4 @@ class ConfirmationForm(ModelForm):
         confirmation_code = cleaned_data.get("input_code")
 
         if SilentList.objects.get(pk=pk).confirmation_code != confirmation_code:
-            raise forms.ValidationError('Wrong code', code='black_list_confirmation')
+            raise forms.ValidationError('Wrong code', code='silent_list_confirmation')

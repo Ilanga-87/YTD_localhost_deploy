@@ -29,4 +29,4 @@ class SilentList(models.Model):
     confirmed_email = models.EmailField(max_length=256, default="")
 
     def get_absolute_url(self):
-        return reverse('confirmed-bl', kwargs={'pk': self.pk})
+        return reverse('confirmed-silent-list', kwargs={'pk': self.pk})
