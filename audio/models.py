@@ -31,7 +31,7 @@ class SilentList(models.Model):
     user_email = models.EmailField(max_length=256)
     confirmation_code = models.CharField(max_length=4)
     confirmation = models.BooleanField(default=False)
-    # input_code = models.CharField(max_length=4, default="")
+    input_code = models.CharField(max_length=4, default="")
     # confirmed_email = models.EmailField(max_length=256, default="")
 
     def get_absolute_url(self):
