@@ -15,8 +15,7 @@ from celery.schedules import crontab
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'YouTubeAudio.settings')
 
 # you change the name here
-app = Celery("YouTubeAudio", broker="redis://127.0.0.1:6379")
-# app.config_from_object(celeryconfig)
+app = Celery("YouTubeAudio")
 
 # read config from Django settings, the CELERY namespace would make celery
 # config keys has `CELERY` prefix
@@ -24,7 +23,6 @@ app.config_from_object('django.conf:settings', namespace="CELERY")
 
 # load celery.py in django apps
 app.autodiscover_tasks()
-
 
 app.conf.beat_schedule = {
     "delete_expired_audio": {
