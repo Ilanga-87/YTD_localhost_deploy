@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  ytd:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn YouTubeAudio.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/deploy/ytd/staticfiles
+      - media_volume:/home/deploy/ytd/uploads/audio
+    expose:
+      - 8000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/db/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+  redis:
+    image: redis:alpine
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A YouTubeAudio worker -P gevent -l info
+    volumes:
+      - static_volume:/home/deploy/ytd/staticfiles
+      - media_volume:/home/deploy/ytd/uploads/audio
+    env_file:
+      - ./.env.prod.db
+    depends_on:
+      - db
+      - redis
+      - ytd
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/deploy/ytd/staticfiles
+      - media_volume:/home/deploy/ytd/uploads/audio
+    ports:
+      - 1337:80
+    depends_on:
+      - ytd
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
