@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import local_config
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,16 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+load_dotenv()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = local_config.DJANGO_SECRET_KEY
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = 1
 
-ALLOWED_HOSTS = [
-    local_config.DJANGO_APP_HOST
-]
-CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
+
+CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://127.0.0.1:1337"]
 
 # Application definition
 
@@ -83,13 +86,24 @@ WSGI_APPLICATION = 'YouTubeAudio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': local_config.DJANGO_DB_NAME,
-        'USER': local_config.DJANGO_DB_USER,
-        'PASSWORD': local_config.DJANGO_DB_PASSWORD,
-        'HOST': local_config.DJANGO_DB_HOST,
+        'NAME': 'ytd_psql',
+        'USER': 'postgres_ytd',
+        'PASSWORD': 'PuKAxU9JdZiwQrS',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+#         "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+#         "USER": os.environ.get("SQL_USER", "user"),
+#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+#         "HOST": os.environ.get("SQL_HOST", "localhost"),
+#         "PORT": os.environ.get("SQL_PORT", "5432"),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -135,25 +149,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = BASE_DIR / "uploads/audio"
 MEDIA_URL = "/download-audio/"
 
-# AWS Credentials
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# Redis
+REDIS_HOST = "redis"
+REDIS_PORT = "6379"
 
 # Celery
-BROKER_URL = "sqs://"
+CELERY_BROKER_URL = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
+CELERY_RESULT_BACKEND = "redis://" + REDIS_HOST + ":" + REDIS_PORT + "/0"
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERYD_MAX_TASKS_PER_CHILD = 1
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_DEFAULT_QUEUE = 'YTDCeleryBroker'
-CELERY_RESULT_BACKEND = None  # Disabling the results backend
-
-BROKER_TRANSPORT_OPTIONS = {
-    'region': 'ap-south-1',
-    'polling_interval': 20,
-}
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-CELERYD_MAX_TASKS_PER_CHILD = 1
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -162,38 +171,38 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = local_config.DJANGO_EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = local_config.DJANGO_EMAIL_HOST_PASSWORD
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        # The console handler
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        # The file handler
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            # Path to the file
-            'filename': '/var/www/YTD/debug.log',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
-    'loggers': {
-        # The logger which sends logs to the console handler
-        'thelogger': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        },
-        # The logger which sends logs to the file handler
-        'thelogger.file': {
-            'handlers': ['file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         # The console handler
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#         # The file handler
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             # Path to the file
+#             'filename': '/var/www/YTD/debug.log',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'WARNING',
+#     },
+#     'loggers': {
+#         # The logger which sends logs to the console handler
+#         'thelogger': {
+#             'handlers': ['console'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'propagate': False,
+#         },
+#         # The logger which sends logs to the file handler
+#         'thelogger.file': {
+#             'handlers': ['file'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'propagate': False,
+#         },
+#     },
+# }
