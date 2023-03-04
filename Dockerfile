@@ -8,9 +8,9 @@ ENV PATH "$PATH:/mnt/d/PyCharm/ytd/YTD_deploy_1509"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-## install psycopg2 dependencies
-#RUN apk update \
-#    && apk add postgresql-dev gcc python3-dev musl-dev
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
 
 # install dependencies
 RUN pip install --upgrade pip
