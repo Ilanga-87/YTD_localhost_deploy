@@ -27,6 +27,7 @@ services:
     restart: always
     build:
       context: .
+      dockerfile: Dockerfile.prod
     command: celery -A YouTubeAudio worker -P gevent -l info
     volumes:
       - static_volume:/home/deploy/ytd/staticfiles
