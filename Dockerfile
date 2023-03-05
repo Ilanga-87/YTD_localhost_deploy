@@ -17,13 +17,13 @@ RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-## copy entrypoint
-#COPY entrypoint .
-#RUN sed -i 's/\r$//g' entrypoint
-#RUN chmod +x entrypoint
+# copy entrypoint
+COPY entrypoint .
+RUN sed -i 's/\r$//g' entrypoint
+RUN chmod +x entrypoint
 
-# copy projec
+# copy project
 COPY . .
 
-## run entrypoint
-#ENTRYPOINT ["sh", "entrypoint"]
+# run entrypoint
+ENTRYPOINT ["sh", "entrypoint"]
