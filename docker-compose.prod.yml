@@ -2,15 +2,13 @@ version: '3.8'
 
 services:
   ytd:
-    build:
-      context: .
-      # dockerfile: Dockerfile.prod
+    build: .
     command: gunicorn YouTubeAudio.wsgi:application --bind 0.0.0.0:8000
-#    volumes:
-#      - static_volume:/home/deploy/ytd/staticfiles
-#      - media_volume:/home/deploy/ytd/uploads/audio
+    volumes:
+     - static_volume:/home/deploy/ytd/staticfiles
+     - media_volume:/home/deploy/ytd/uploads/audio
     expose:
-      - 8000
+      - 8000:8000
     env_file:
       - ./.env.prod
     depends_on:
@@ -27,7 +25,6 @@ services:
 #    restart: always
 #    build:
 #      context: .
-#      dockerfile: Dockerfile.prod
 #    command: celery -A YouTubeAudio worker -P gevent -l info
 #    volumes:
 #      - static_volume:/home/deploy/ytd/staticfiles
@@ -38,18 +35,18 @@ services:
 #      - db
 #      - redis
 #      - ytd
-#  nginx:
-#    build: ./nginx
-#    volumes:
-#      - static_volume:/home/deploy/ytd/staticfiles
-#      - media_volume:/home/deploy/ytd/uploads/audio
-#    ports:
-#      - 1337:80
-#    depends_on:
-#      - ytd
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/deploy/ytd/staticfiles
+      - media_volume:/home/deploy/ytd/uploads/audio
+    ports:
+      - 80:80
+    depends_on:
+      - ytd
 
 volumes:
   postgres_data:
-#  static_volume:
-#  media_volume:
+  static_volume:
+  media_volume:
 
