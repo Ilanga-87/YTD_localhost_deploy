@@ -32,7 +32,7 @@ DEBUG = 1
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
 
-CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://127.0.0.1:1337"]
+CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://127.0.0.1"]
 
 # Application definition
 
@@ -168,8 +168,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = local_config.DJANGO_EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = local_config.DJANGO_EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = os.environ.get("EMAIL_U", "email@host.com")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_P", "psswrd")
 
 # LOGGING = {
 #     'version': 1,
