@@ -30,9 +30,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # DEBUG = int(os.environ.get("DEBUG", default=0))
 DEBUG = 1
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "[::1]"]
+ALLOWED_HOSTS = ["mp3-from-youtube.com", "2.56.91.41"]
 
-CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://mp3-from-youtube.com", "http://2.56.91.41"]
 
 # Application definition
 

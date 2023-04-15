@@ -4,7 +4,7 @@ FROM python:3.10.8-alpine
 WORKDIR /ytdmp3
 
 # set environment variables
-ENV PATH "$PATH:/mnt/d/PyCharm/ytd/YTD_deploy_1509"
+ENV PATH "$PATH:/home/YTD/YTD_deploy"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
