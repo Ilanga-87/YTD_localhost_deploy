@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
+import re
 
 import random
 import string
@@ -68,3 +69,13 @@ def send_confirmation_mail(user_mail: str, conf_code: str) -> None:
         settings.EMAIL_HOST_USER,
         [user_mail]
     )
+
+
+def clear_title(title_string):
+    # output_string = re.sub(
+    #     r"[^\w\u0400-\u04FF\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF\u0100-\u024F\u1E00-\u1EFF\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF\u2000-\u206F\u2070-\u209F\u20A0-\u20CF\u2100-\u214F\u2150-\u218F\u2190-\u21FF]+",
+    #     " ", title_string)
+    output_string = re.sub(r"[^a-zA-Zа-яА-Я0-9\s]+", "", title_string)  # Remove non-alphanumeric characters
+    output_string = re.sub(r"\s{2,}", " ", output_string)  # Replace multiple spaces with single space
+    output_string = re.sub(r"\s+", "_", output_string)  # Replace single spaces with underscore
+    return output_string
