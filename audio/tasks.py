@@ -51,19 +51,14 @@ def download(video, video_id):
         with YoutubeDL(ytdl_opts) as ydl:
             video_info = ydl.extract_info(video, download=False)
             instance.title = video_info.get("title", None)
-            if video_info['duration'] >= 7200:
-                message = ' because is longer then 2 hours'
-                send_sad_letter(instance.user_email, instance.title, message)
-                instance.delete()
 
-            else:
-                ydl.download([video])
-                instance.audio_file.name = f"{new_title}.mp3"
-                instance.save()
-                sitename = os.environ.get('DOMAIN', '127.0.0.1:8000')
-                link = f"{sitename}/load-audio-{instance.slug}"
-                send_link(instance.user_email, instance.title, link)
-                return {"status": True}
+            ydl.download([video])
+            instance.audio_file.name = f"{new_title}.mp3"
+            instance.save()
+            sitename = os.environ.get('DOMAIN', '127.0.0.1:8000')
+            link = f"{sitename}/load-audio-{instance.slug}"
+            send_link(instance.user_email, instance.title, link)
+            return {"status": True}
     except YoutubeDLError:
         send_sad_letter(instance.user_email, instance.title)
         instance.delete()
