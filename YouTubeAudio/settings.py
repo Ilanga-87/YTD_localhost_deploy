@@ -28,11 +28,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = int(os.environ.get("DEBUG", default=0))
-DEBUG = 1
+DEBUG = 0
 
-ALLOWED_HOSTS = ["mp3-from-youtube.com", "2.56.91.41"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
-CSRF_TRUSTED_ORIGINS = ["https://mp3-from-youtube.com", "http://mp3-from-youtube.com", "http://2.56.91.41"]
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED").split(",")
 
 # Application definition
 
