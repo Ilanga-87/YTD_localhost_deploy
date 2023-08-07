@@ -39,6 +39,13 @@ CSRF_TRUSTED=http://127.0.0.1
 Replace the values marked with "*" with appropriate values, 
 and if launching the service on a specialized domain, provide the domain for "DJANGO_ALLOWED_HOSTS" and "CSRF_TRUSTED."
 
+To enable the application's email functionality, you need to provide the necessary authentication credentials. 
+Depending on your mail provider, this can be done using a token, access key, or another authentication variant. 
+This step allows the application to securely interact with your email account for sending and receiving messages.
+
+Please follow the instructions provided by your email service provider to generate the required authentication credentials. 
+Once obtained, you will integrate these credentials into the application's settings to enable seamless email communication.
+
 5. Create a ".env.db" file with the same variables used in the previous step:
 ```commandline
 POSTGRES_USER=db_user
