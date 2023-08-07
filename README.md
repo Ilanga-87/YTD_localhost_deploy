@@ -1,18 +1,35 @@
 # YouTube MP3 downloader
 
 YouTube MP3 Downloader is a simple and straightforward tool for downloading MP3 files from YouTube. 
+
+
+## Description
+
 It comes with a Web UI built on Django and uses PostgreSQL as a database, Celery for deferred and scheduled tasks, and Redis as a broker. 
 The downloading and conversion process is based on the "youtube-dlp" library.
 
+Built with:
 
-![Python]({https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue})
+![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green)
+![PostgresQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
+This version allows you to install the application on localhost and use it locally.
+
+## Getting started
+
+### Dependencies
+
+- OS Linux or Windows with WSL2 support
+- Docker
 
 ## Installation
 
 To install via Docker, follow these steps:
 
-1. Download and install Docker from docker.com.
+1. Download and install Docker from docker.com. Start Docker.
 
 2. Clone this git repository by running the following command in your terminal:
 ```commandline
@@ -25,6 +42,10 @@ cd YTD_deploy
 ```
 
 4. Create a .env.dev file in the project directory and fill in the required variables:
+```commandline
+nano .env.dev
+```
+
 ```commandline
 SQL_ENGINE=django.db.backends.postgresql
 SQL_HOST=db
@@ -53,6 +74,10 @@ Please follow the instructions provided by your email service provider to genera
 Once obtained, you will integrate these credentials into the application's settings to enable seamless email communication.
 
 5. Create a ".env.db" file with the same variables used in the previous step:
+```commandline
+nano .env.db
+```
+
 ```commandline
 POSTGRES_USER=db_user
 POSTGRES_PASSWORD=db_password
