@@ -4,13 +4,17 @@ YouTube MP3 Downloader is a simple and straightforward tool for downloading MP3 
 It comes with a Web UI built on Django and uses PostgreSQL as a database, Celery for deferred and scheduled tasks, and Redis as a broker. 
 The downloading and conversion process is based on the "youtube-dlp" library.
 
+
+![Python]({https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue})
+
+
 ## Installation
 
 To install via Docker, follow these steps:
 
 1. Download and install Docker from docker.com.
 
-2. Clone this git repository by running the following command in your terminal or command prompt:
+2. Clone this git repository by running the following command in your terminal:
 ```commandline
 git clone --branch unlimited_time https://github.com/Ilanga-87/YTD_deploy/
 ```
@@ -38,6 +42,8 @@ CSRF_TRUSTED=http://127.0.0.1
 
 Replace the values marked with "*" with appropriate values, 
 and if launching the service on a specialized domain, provide the domain for "DJANGO_ALLOWED_HOSTS" and "CSRF_TRUSTED."
+
+**Attention:** Please note that the email_password is not your standard password used for logging in and checking emails.
 
 To enable the application's email functionality, you need to provide the necessary authentication credentials. 
 Depending on your mail provider, this can be done using a token, access key, or another authentication variant. 
