@@ -1,76 +1,74 @@
-# YouTubeAudioDownloader
+# YouTube MP3 downloader
 
-This is a website that allows you to download mp3 audio files from YouTube video
+YouTube MP3 Downloader is a simple and straightforward tool for downloading MP3 files from YouTube. 
+It comes with a Web UI built on Django and uses PostgreSQL as a database, Celery for deferred and scheduled tasks, and Redis as a broker. 
+The downloading and conversion process is based on the "youtube-dlp" library.
 
-To install it you should have Python3 on your device. Also, you need install REDIS and PostgreSQL. 
-Pay attention that there are default host and port for REDIS in settings.py (127.0.0.1:6379).
+## Installation
 
-## Create database and user
+To install via Docker, follow these steps:
+
+1. Download and install Docker from docker.com.
+
+2. Clone this git repository by running the following command in your terminal or command prompt:
+```commandline
+git clone --branch unlimited_time https://github.com/Ilanga-87/YTD_deploy/
 ```
-CREATE DATABASE db_name OWNER user_name;
-```
-Open settings.py in YouTubeAudio folder and find follow
+3. Navigate to the project directory by using the "cd" command:
 
-```Python3
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+```commandline
+cd YTD_deploy
 ```
 
-Here you should fill name of your database, user and password.
-
-## Create and activate virtual environment
-After cloning the repo you’re better to delete venv folder. Then create new venv according your Python3 version.
-In command line move to YouTubeAudio folder and enter the next command
-```
-python3 -m venv /path/to/new/virtual/environment
-```
-Then activate it.
-
-Windows CMD:
-```
-<venv>\Scripts\activate.bat
-```
-Linux bash:
-```
-source <venv>/bin/activate
-```
-## Get necessary modules
-```
-pip install -r requirements.txt
+4. Create a .env.dev file in the project directory and fill in the required variables:
+```commandline
+SQL_ENGINE=django.db.backends.postgresql
+SQL_HOST=db
+SQL_PORT=5432
+DATABASE=postgres
+SECRET_KEY=change_me *
+SQL_DATABASE=db_name *
+SQL_USER=db_user *
+SQL_PASSWORD=db_password *
+EMAIL_U=email *
+EMAIL_P=email_password *
+DJANGO_ALLOWED_HOSTS=127.0.0.1
+CSRF_TRUSTED=http://127.0.0.1
 ```
 
-## Start on localhost
-```
-python3 manage.py runserver
-```
-Now you can open site by http://127.0.0.1:8000/ 
+Replace the values marked with "*" with appropriate values, 
+and if launching the service on a specialized domain, provide the domain for "DJANGO_ALLOWED_HOSTS" and "CSRF_TRUSTED."
 
-## Start tasks
-In separate terminals in project folder with activated virtual environment input next commands
-```
-celery -A YouTubeAudio worker -P gevent -l info
-```
-```
-celery -A YouTubeAudio beat -l info
-```
-Also you can start flower for tracking
-```
-celery --broker=redis://127.0.0.1:6379/0 flower  --port=5555
+5. Create a ".env.db" file with the same variables used in the previous step:
+```commandline
+POSTGRES_USER=db_user
+POSTGRES_PASSWORD=db_password
+POSTGRES_DB=db_name
 ```
 
-## Change email
-In settings.py input your email and password 
-```Pytnon3
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
+6. To build production images and run containers, use the following command:
 ```
-If you don’t use Gmail you also have to change host and may be some other parameters. 
+docker compose up --build -d
+```
 
+7. To create an admin user, execute the following command:
+```
+docker compose exec ytd python manage.py createsuperuser
+```
+
+## Usage
+
+Once the installation is complete, open your preferred web browser and visit http://127.0.0.1:8000 to access the YouTube MP3 downloader service.
+
+Please note that this service allows to download MP3 files from YouTube videos for personal use only, 
+and you should comply with YouTube's terms of service and any applicable copyright laws.
+
+
+
+## Features
+
+- Download MP3 files from YouTube videos.
+- Option to add user email to the silent list to prevent potential email spam from the service.
+- Automatic disk space cleanup by deleting files and database instances older than 24 hours. The cleansing task runs every midnight.
+
+If you encounter any issues or have questions, feel free to reach out for support.
