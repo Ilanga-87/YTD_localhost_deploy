@@ -29,16 +29,16 @@ This version allows you to install the application on localhost and use it local
 
 To install via Docker, follow these steps:
 
-1. Download and install Docker from docker.com. Start Docker.
+1. Download and install Docker from docker.com. Start Docker Desktop.
 
 2. Clone this git repository by running the following command in your terminal:
 ```commandline
-git clone --branch unlimited_time https://github.com/Ilanga-87/YTD_deploy/
+git clone https://github.com/Ilanga-87/YTD_localhost_deploy
 ```
 3. Navigate to the project directory by using the "cd" command:
 
 ```commandline
-cd YTD_deploy
+cd YTD_localhost_deploy/
 ```
 
 4. Create a .env.dev file in the project directory and fill in the required variables:
