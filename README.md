@@ -31,7 +31,7 @@ To install via Docker, follow these steps:
 
 1. Download and install Docker from docker.com. Start Docker Desktop.
 
-2. Clone this git repository by running the following command in your terminal:
+2. Clone this git repository by running the following command in your Linux/WSL terminal:
 ```commandline
 git clone https://github.com/Ilanga-87/YTD_localhost_deploy
 ```
@@ -41,7 +41,7 @@ git clone https://github.com/Ilanga-87/YTD_localhost_deploy
 cd YTD_localhost_deploy/
 ```
 
-4. Create a .env.dev file in the project directory and fill in the required variables:
+4. Create an ".env.dev" file in the project directory and fill in the required variables:
 ```commandline
 nano .env.dev
 ```
@@ -73,7 +73,7 @@ This step allows the application to securely interact with your email account fo
 Please follow the instructions provided by your email service provider to generate the required authentication credentials. 
 Once obtained, you will integrate these credentials into the application's settings to enable seamless email communication.
 
-5. Create a ".env.db" file with the same variables used in the previous step:
+5. Create an ".env.db" file with the same values used in the previous step:
 ```commandline
 nano .env.db
 ```
