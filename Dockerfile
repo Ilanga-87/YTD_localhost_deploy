@@ -31,6 +31,7 @@ RUN apk update && apk add libpq
 RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+RUN pip install --upgrade yt-dlp
 RUN apk update && apk upgrade && apk add ffmpeg
 
 # copy entrypoint
