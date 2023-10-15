@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-import local_config
 import os
 from dotenv import load_dotenv
 
@@ -79,20 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'YouTubeAudio.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'ytd_psql',
-#         'USER': 'postgres_ytd',
-#         'PASSWORD': 'PuKAxU9JdZiwQrS',
-#         'HOST': 'db',
-#         'PORT': 5432,
-#     }
-# }
 
 DATABASES = {
     "default": {

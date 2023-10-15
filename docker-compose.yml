@@ -4,7 +4,7 @@ services:
   ytd:
     build: .
     command: >
-      sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+      sh -c "python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./YouTubeAudio/:/code/YouTubeAudio/
       - static_volume:/home/deploy/ytd/staticfiles
@@ -27,7 +27,21 @@ services:
     restart: always
     build:
       context: .
-    command: celery -A YouTubeAudio worker -P gevent -l info && celery -A YouTubeAudio beat -l info
+    command: celery -A YouTubeAudio worker -P gevent -l info
+    volumes:
+      - static_volume:/home/deploy/ytd/staticfiles
+      - media_volume:/home/deploy/ytd/uploads/audio
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+      - ytd
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    command: celery -A YouTubeAudio beat -l info
     volumes:
       - static_volume:/home/deploy/ytd/staticfiles
       - media_volume:/home/deploy/ytd/uploads/audio

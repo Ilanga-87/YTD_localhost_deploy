@@ -1,10 +1,12 @@
 FROM python:3.10.8-alpine
 
 # set work directory
-WORKDIR /ytdmp3
+ENV HOME=/home/deploy
+ENV APP_HOME=/home/deploy/ytd
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
 
 # set environment variables
-ENV PATH "$PATH:/home/YTD/YTD_deploy"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -19,11 +21,9 @@ RUN mkdir -p /home/deploy
 RUN addgroup -S deploy && adduser -S deploy -G deploy
 
 # create the appropriate directories
-ENV HOME=/home/deploy
-ENV APP_HOME=/home/deploy/ytd
-RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/uploads && mkdir $APP_HOME/uploads/audio
+RUN mkdir -p $APP_HOME/uploads/audio
+RUN mkdir -p $APP_HOME/celery/var/run/celerybeat-schedule
 WORKDIR $APP_HOME
 
 # install dependencies

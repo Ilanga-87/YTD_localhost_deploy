@@ -27,10 +27,10 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "delete_expired_audio": {
         "task": "audio.tasks.clear_expired",
-        "schedule": crontab(minute=0, hour=0)
+        "schedule": crontab(minute=0, hour=0)  # daily at midnight
     },
     "delete_empty_blacklist": {
         "task": "audio.tasks.clear_empty",
         "schedule": crontab(minute=0, hour=0, day_of_month=2)
-    }
+    },
 }
