@@ -107,6 +107,6 @@ and you should comply with YouTube's terms of service and any applicable copyrig
 
 - Download MP3 files from YouTube videos.
 - Option to add user email to the silent list to prevent potential email spam from the service.
-- Automatic disk space cleanup by deleting files and database instances older than 24 hours. The cleansing task runs every midnight.
+- Automatic disk space cleanup by deleting files in Docker container and database instances older than 24 hours. The cleansing task runs every midnight (UTC).
 
 If you encounter any issues or have questions, feel free to reach out for support.
