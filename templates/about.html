@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    MP3 from YouTube | About
+{% endblock %}
+
+{% block subcontent %}
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{% static 'img/photo.jpg' %}" alt="">
+        </div>
+        <div class="col-lg-6 ">
+            <div class="about-text">
+                <h1>About Me </h1>
+                   <p> Hello!
+                       My name is <a href="{{ linkedin_url }}">Lika Romanova</a>, and
+                    I am a novice programmer deeply in love with the world of Python.
+                    This website is my personal project, created for the purpose of exploring
+                    and practicing web development using Django.
+                    I'm always on the lookout for new ways to enhance my programming skills.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="about-text">
+                <h2>About This Project</h2>
+
+                <p>This site has been a practical application of the following skills:</p>
+    <ul>
+    <li> Utilizing the Django framework for Python, delving into the concept of CBVs (Class-Based Views).</li>
+    <li> Interacting with PostgreSQL, one of the most popular databases.</li>
+    <li> Implementing "deferred" tasks with Celery.</li>
+    <li> Creating periodic tasks through Celery beat.</li>
+    <li> Working with message brokers like Redis and RabbitMQ.</li>
+    <li> Integrating third-party modules into my project.</li>
+        <li> Bundling all components into a unified Docker and deploying it both <a href="{{ repo_url }}">locally</a> and on a server with a domain. </li>
+    </ul>
+
+                <p>It has been an interesting and valuable experience that involved solving a range of challenges to ensure a pleasant and comfortable user interaction with the end product.</p>
+                <p>Behind my love for code lies a desire to make everyday life more convenient and productive. Please don't hesitate to reach out if you have any questions, suggestions, or simply want to get in touch: <a href="mailto:mp3.from.ytb@gmail.com">{{ email }}</a>. Your feedback is important to me.</p>
+                <p>Thank you for visiting my website, and welcome to the world of my projects and explorations: <a href="{{ github_url }}">GitHub</a>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

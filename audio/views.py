@@ -35,13 +35,6 @@ class ConvertView(CreateView):
         instance.video_id = video_id
         instance.slug = slug
 
-        # possible_previous_conversion = Conversion.objects.filter(video_id=instance.video_id)
-        # if possible_previous_conversion and Conversion.objects.get(video_id=instance.video_id).audio_file.name != '':
-        #     previous_conversion = Conversion.objects.get(video_id=instance.video_id)
-        #     previous_conversion.expiration_time = get_expiration_date(1)
-        #     previous_conversion.save()
-        #     send_link(instance.user_email, previous_conversion.title, f"https://mp3-from-youtube.com/load-audio-{previous_conversion.slug}")
-        #     return redirect(f"{self.success_url}-{previous_conversion.slug}")
         instance.save()
         download.delay(video, slug)  # deferred processing
 
@@ -123,3 +116,18 @@ class WaitContextView(TemplateView):
 
 class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
+
+
+class AboutView(TemplateView):
+    template_name = "about.html"
+    def get_context_data(self, **kwargs):
+        context = super(AboutView, self).get_context_data()
+        linkedin_url = "https://www.linkedin.com/in/%D0%BB%D0%B8%D0%BA%D0%B0-%D1%80%D0%BE%D0%BC%D0%B0%D0%BD%D0%BE%D0%B2%D0%B0-0a7134298/"
+        repo_url = "https://github.com/Ilanga-87/YTD_localhost_deploy"
+        github_url = "https://github.com/Ilanga-87"
+        email_address = "mp3.from.ytb@gmail.com"
+        context["linkedin_url"] = linkedin_url
+        context["repo_url"] = repo_url
+        context["github_url"] = github_url
+        context["email"] = email_address
+        return context
