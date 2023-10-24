@@ -1211,6 +1211,7 @@ Responsive
 @media (min-width: 1200px) {
 	.container {
 		max-width: 1176px;
+		min-height: 100%;
 	}
 }
 
