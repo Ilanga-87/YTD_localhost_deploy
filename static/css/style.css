@@ -616,6 +616,7 @@ Footer section
 .footer-section {
 	padding: 40px 0 0;
 	background: #22242b;
+	min-height: 100%;
 }
 
 .footer-widger {
